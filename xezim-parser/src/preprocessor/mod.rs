@@ -101,6 +101,14 @@ impl Preprocessor {
     /// §39.6). Called by `new()` and again by `undefineall` so the
     /// predefined names survive a wipe of user-defined macros.
     fn seed_predefined(defines: &mut HashMap<String, MacroDef>) {
+        // Tool-identify macro, same convention as VERILATOR:
+        // sources that need a feature this simulator lacks)
+        // can `ifdef` around it, e.g. `ifndef XEZIM guard.
+        defines.insert("XEZIM".to_string(), MacroDef {
+            name: "XEZIM".to_string(),
+            params: None,
+            body: String::new(),
+        });
         for (name, val) in [
             ("SV_COV_START", "0"),
             ("SV_COV_STOP", "1"),
